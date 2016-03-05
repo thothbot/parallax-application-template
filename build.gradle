@@ -16,6 +16,7 @@ allprojects {
     apply plugin: "idea"
 
     version = '1.0'
+
     ext {
         appName = "myapp"
         parallaxVersion = '2.0-SNAPSHOT'
@@ -45,8 +46,8 @@ project(":gwt") {
     apply plugin: "war"
 
     dependencies {
-        compile project(":core")
         compile "org.parallax3d.parallax:parallax-gwt:$parallaxVersion"
+        compile project(":core")
         compile "org.parallax3d.parallax:parallax:$parallaxVersion:sources"
         compile "org.parallax3d.parallax:parallax-gwt:$parallaxVersion:sources"
         compile "org.parallax3d.parallax:parallax-renderer-plugins:$parallaxVersion:sources"

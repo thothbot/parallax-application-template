@@ -2,9 +2,9 @@
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.7.0//EN" "http://gwtproject.org/doctype/2.7.0/gwt-module.dtd">
 <module rename-to="html">
 
-	<inherits name='myapp' />
-
 	<inherits name='org.parallax3d.parallax.platforms.parallaxGwt' />
+
+	<inherits name='myapp' />
 
 	<inherits name='org.parallax3d.parallax.controllers' />
 
