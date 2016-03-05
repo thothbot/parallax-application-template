@@ -6,13 +6,8 @@ import org.parallax3d.parallax.graphics.cameras.PerspectiveCamera;
 import org.parallax3d.parallax.graphics.extras.core.ExtrudeGeometry;
 import org.parallax3d.parallax.graphics.extras.core.FontData;
 import org.parallax3d.parallax.graphics.extras.core.TextGeometry;
-import org.parallax3d.parallax.graphics.extras.geometries.SphereGeometry;
-import org.parallax3d.parallax.graphics.lights.AmbientLight;
-import org.parallax3d.parallax.graphics.lights.DirectionalLight;
 import org.parallax3d.parallax.graphics.lights.PointLight;
 import org.parallax3d.parallax.graphics.materials.Material;
-import org.parallax3d.parallax.graphics.materials.MeshBasicMaterial;
-import org.parallax3d.parallax.graphics.materials.MeshLambertMaterial;
 import org.parallax3d.parallax.graphics.materials.MeshPhongMaterial;
 import org.parallax3d.parallax.graphics.objects.Mesh;
 import org.parallax3d.parallax.graphics.scenes.Scene;
@@ -23,7 +18,6 @@ import org.parallax3d.parallax.loaders.FontLoadHandler;
 import org.parallax3d.parallax.loaders.Loader;
 import org.parallax3d.parallax.loaders.TypefacejsLoader;
 import org.parallax3d.parallax.system.gl.enums.PixelFormat;
-import org.parallax3d.parallax.system.gl.enums.TextureWrapMode;
 
 public class MyAnimation extends AnimationAdapter implements TouchMoveHandler
 {
