@@ -6,10 +6,11 @@
 .classpath
 /.idea
 *.iml
-*.ipr
-*.iws
 
-.gradle/
+!/.gradle
+/.gradle/*
+!/.gradle/wrapper/
+
 build/
 bin/
 target/

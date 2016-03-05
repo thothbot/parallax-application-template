@@ -1,0 +1,60 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        jcenter()
+    }
+    dependencies {
+        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
+        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'org.robovm:robovm-gradle-plugin:1.12.0'
+    }
+}
+
+allprojects {
+    apply plugin: "eclipse"
+    apply plugin: "idea"
+
+    version = '1.0'
+    ext {
+        appName = "myapp"
+        parallaxVersion = '2.0-SNAPSHOT'
+        roboVMVersion = '1.12.0'
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+    }
+}
+
+project(":core") {
+    apply plugin: "java"
+
+    dependencies {
+        compile "org.parallax3d.parallax:parallax:$parallaxVersion"
+        compile "org.parallax3d.parallax:parallax-renderer-plugins:$parallaxVersion"
+        compile "org.parallax3d.parallax:parallax-loaders:$parallaxVersion"
+        compile "org.parallax3d.parallax:parallax-controllers:$parallaxVersion"
+    }
+}
+
+project(":gwt") {
+    apply plugin: "gwt"
+    apply plugin: "war"
+
+    dependencies {
+        compile project(":core")
+        compile "org.parallax3d.parallax:parallax-gwt:$parallaxVersion"
+        compile "org.parallax3d.parallax:parallax:$parallaxVersion:sources"
+        compile "org.parallax3d.parallax:parallax-gwt:$parallaxVersion:sources"
+        compile "org.parallax3d.parallax:parallax-renderer-plugins:$parallaxVersion:sources"
+        compile "org.parallax3d.parallax:parallax-loaders:$parallaxVersion:sources"
+        compile "org.parallax3d.parallax:parallax-controllers:$parallaxVersion:sources"
+    }
+}
+
+tasks.eclipse.doLast {
+    delete ".project"
+}
