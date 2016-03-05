@@ -1,11 +1,47 @@
-.gradle
+*~
+.*.swp
+.DS_STORE
+
+.settings
+.classpath
+/.idea
+*.iml
+*.ipr
+*.iws
+
+.gradle/
 build/
+bin/
+target/
+obj/
+out/
+classes/
+.gwt/
+gwt-unitCache/
+war/
+gen/
+gen-external-apklibs/
+armeabi/
+armeabi-v7a/
+linux32/
+linux64/
+windows32/
+windows64/
+macosx32/
+ios32/
+Debug/
+Release/
+x64/
+x86/
+ipch/
+/dist
 
-# Ignore Gradle GUI config
-gradle-app.setting
+*.a
+*.dll
+*.dll.mdb
+*.userprefs
+*.sdf
+*.class
 
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
-
-# Cache of project
-.gradletasknamecache
+parallax-*.zip
+parallax-*.zip.MD5
