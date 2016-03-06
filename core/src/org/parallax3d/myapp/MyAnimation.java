@@ -6,36 +6,30 @@ import org.parallax3d.parallax.graphics.cameras.PerspectiveCamera;
 import org.parallax3d.parallax.graphics.extras.core.ExtrudeGeometry;
 import org.parallax3d.parallax.graphics.extras.core.FontData;
 import org.parallax3d.parallax.graphics.extras.core.TextGeometry;
-import org.parallax3d.parallax.graphics.extras.geometries.BoxGeometry;
-import org.parallax3d.parallax.graphics.materials.Material;
-import org.parallax3d.parallax.graphics.materials.MeshPhongMaterial;
-import org.parallax3d.parallax.graphics.materials.ShaderMaterial;
+import org.parallax3d.parallax.graphics.extras.geometries.SphereGeometry;
+import org.parallax3d.parallax.graphics.lights.AmbientLight;
+import org.parallax3d.parallax.graphics.lights.DirectionalLight;
+import org.parallax3d.parallax.graphics.lights.PointLight;
+import org.parallax3d.parallax.graphics.materials.*;
 import org.parallax3d.parallax.graphics.objects.Mesh;
-import org.parallax3d.parallax.graphics.renderers.shaders.CubeShader;
 import org.parallax3d.parallax.graphics.scenes.Scene;
-import org.parallax3d.parallax.graphics.textures.CubeTexture;
-import org.parallax3d.parallax.graphics.textures.Texture;
 import org.parallax3d.parallax.input.TouchMoveHandler;
 import org.parallax3d.parallax.loaders.FontLoadHandler;
 import org.parallax3d.parallax.loaders.Loader;
 import org.parallax3d.parallax.loaders.TypefacejsLoader;
-import org.parallax3d.parallax.system.gl.enums.PixelFormat;
+import org.parallax3d.parallax.math.Color;
 
 public class MyAnimation extends AnimationAdapter implements TouchMoveHandler
 {
-
     // Links to resources in /core/assets
     static final String font = "helvetiker_bold.typeface.js";
-    static final String textures = "park2/*.jpg";
 
     PerspectiveCamera camera;
 
     // Main scene
     Scene scene;
 
-    // Skybox
-    Scene sceneCube;
-    PerspectiveCamera cameraCube;
+    Mesh particleLight;
 
     int width = 0, height = 0;
     int mouseX = 0, mouseY = 0;
@@ -62,20 +56,13 @@ public class MyAnimation extends AnimationAdapter implements TouchMoveHandler
         );
 
         // Set position of camera instead of (0,0,0)
-        camera.getPosition().setZ( 200 );
-
-        // Init cube texture
-        CubeTexture textureCube = new CubeTexture( textures );
-        textureCube.setFormat(PixelFormat.RGB);
+        camera.getPosition().set( 200, 200, 200 );
 
         // Init main material for reflection
         final MeshPhongMaterial material = new MeshPhongMaterial()
                 .setSpecular( 0xffffff )
                 .setShininess( 100 )
-                .setEnvMap( textureCube )
-                .setCombine( Texture.OPERATIONS.MIX )
-                .setReflectivity( 0.95 )
-                .setWrapAround(true);
+                .setShading(Material.SHADING.SMOOTH);
 
         // Load font
         new TypefacejsLoader(font, new FontLoadHandler() {
@@ -101,37 +88,41 @@ public class MyAnimation extends AnimationAdapter implements TouchMoveHandler
 
         });
 
-        // Skybox
-        ShaderMaterial sMaterial = new ShaderMaterial(new CubeShader())
-                .setDepthWrite( false )
-                .setSide( Material.SIDE.BACK );
-        sMaterial.getShader().getUniforms().get("tCube").setValue( textureCube );
+        // Lights
+        MeshBasicMaterial particleLightMaterial = new MeshBasicMaterial();
+        particleLightMaterial.setColor(new Color(0xffffff));
+        particleLight = new Mesh( new SphereGeometry( 4, 15, 15 ), particleLightMaterial );
+        scene.add( particleLight );
 
-        sceneCube = new Scene();
-        cameraCube = new PerspectiveCamera(
-                45, // fov
-                context.getAspectRation(), // aspect
-                1, // near
-                100000 // far
-        );
+        scene.add( new AmbientLight( 0x404040 ) );
 
-        sceneCube.add( new Mesh( new BoxGeometry( 500, 500, 500 ), sMaterial ) );
+        DirectionalLight directionalLight = new DirectionalLight( 0xffffff, 0.5 );
+        directionalLight.getPosition().set( 1 ).normalize();
+        scene.add( directionalLight );
 
-        context.getRenderer().setAutoClear(false);
+        PointLight pointLight = new PointLight( 0x0011FF, 1, 500 );
+        scene.add( pointLight );
+
+        ((MeshBasicMaterial)particleLight.getMaterial()).setColor( pointLight.getColor() );
+        pointLight.setPosition( particleLight.getPosition() );
     }
 
     // Called each time when need to update the scene
     @Override
     public void onUpdate(RenderingContext context)
     {
+        double timer = context.getFrameId() * 0.0025;
+
         camera.getPosition().addX(( mouseX - camera.getPosition().getX() ) * .05);
         camera.getPosition().addY(( - mouseY - camera.getPosition().getY() ) * .05);
 
         camera.lookAt( scene.getPosition() );
 
-        cameraCube.getRotation().copy( camera.getRotation() );
+        particleLight.getPosition().set(
+                Math.cos( timer * 7 ) * 100,
+                Math.sin( timer * 5 ) * 200,
+                Math.sin( timer * 3 ) * 100 );
 
-        context.getRenderer().render( sceneCube, cameraCube );
         context.getRenderer().render( scene, camera );
     }
 
