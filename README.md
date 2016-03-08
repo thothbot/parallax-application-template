@@ -70,3 +70,12 @@ After that open ```127.0.0.1:8080/gwt``` in your browser.
 #### /android
 
 coming soon
+
+### Issues
+
+In case of:
+```
+Execution failed for task ':core:compileJava'.
+> Could not find tools.jar
+```
+You need to create a System Variable `JAVA_HOME` in Windows Environment Variables with path to the latest JDK folder.
