@@ -73,9 +73,14 @@ coming soon
 
 ### Issues
 
-In case of:
+**In case of:**
 ```
 Execution failed for task ':core:compileJava'.
 > Could not find tools.jar
 ```
-You need to create a System Variable `JAVA_HOME` in Windows Environment Variables with path to the latest JDK folder.
+You need to create:
+* a System Variable `JAVA_HOME` in Windows Environment Variables with path to the latest JDK folder.
+* or set `org.gradle.java.home` to the location of JDK in `gradle.properties`. The `gradle.properties`
+file looked up by gradle is located in the users home directory, in the `.gradle` subdirectory.
+(eg. `c:/users/me/.gradle/gradle.properties`).
+For example: `org.gradle.java.home = c:/Program Files/Java/jdk1.7.0_03`
